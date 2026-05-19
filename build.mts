@@ -1,4 +1,7 @@
-import * as esbuild from "esbuild";
+// @ts-ignore
+delete process.versions.pnp;
+delete process.env.NODE_OPTIONS;
+const esbuild = await import("esbuild");
 import { globPlugin } from "esbuild-plugin-glob";
 import fs from "node:fs/promises";
 import postcss, { type Processor } from "postcss";
@@ -31,11 +34,11 @@ const assets: Assets[] = [
 const ts_dirs = ["helpers", "preload", "main", "render"];
 const production = process.env.NODE_ENV === "production";
 
-console.log(chalk.blue(figlet.textSync("NightPDF")));
+console.log(chalk.blue(figlet.textSync("DarkPDF")));
 console.log(chalk.blue("Building...."));
 
-await fs.mkdir("out");
-await fs.mkdir("out/css");
+await fs.mkdir("out", { recursive: true });
+await fs.mkdir("out/css", { recursive: true });
 
 if (production) {
 	plugins.push(

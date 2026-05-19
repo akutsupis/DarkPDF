@@ -51,12 +51,6 @@ pdfjs-download-button-label = Изтегляне
 pdfjs-bookmark-button =
     .title = Текуща страница (преглед на адреса на страницата)
 pdfjs-bookmark-button-label = Текуща страница
-# Used in Firefox for Android.
-pdfjs-open-in-app-button =
-    .title = Отваряне в приложение
-# Used in Firefox for Android.
-# Length of the translation matters since we are in a mobile context, with limited screen estate.
-pdfjs-open-in-app-button-label = Отваряне в приложение
 
 ##  Secondary toolbar and context menu
 
@@ -111,13 +105,13 @@ pdfjs-document-properties-button-label = Свойства на документ�
 pdfjs-document-properties-file-name = Име на файл:
 pdfjs-document-properties-file-size = Големина на файл:
 # Variables:
-#   $size_kb (Number) - the PDF file size in kilobytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-kb = { $size_kb } КБ ({ $size_b } байта)
+#   $kb (Number) - the PDF file size in kilobytes
+#   $b (Number) - the PDF file size in bytes
+pdfjs-document-properties-size-kb = { NUMBER($kb, maximumSignificantDigits: 3) } КБ ({ $b } байта)
 # Variables:
-#   $size_mb (Number) - the PDF file size in megabytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-mb = { $size_mb } МБ ({ $size_b } байта)
+#   $mb (Number) - the PDF file size in megabytes
+#   $b (Number) - the PDF file size in bytes
+pdfjs-document-properties-size-mb = { NUMBER($mb, maximumSignificantDigits: 3) } МБ ({ $b } байта)
 pdfjs-document-properties-title = Заглавие:
 pdfjs-document-properties-author = Автор:
 pdfjs-document-properties-subject = Тема:
@@ -125,9 +119,8 @@ pdfjs-document-properties-keywords = Ключови думи:
 pdfjs-document-properties-creation-date = Дата на създаване:
 pdfjs-document-properties-modification-date = Дата на промяна:
 # Variables:
-#   $date (Date) - the creation/modification date of the PDF file
-#   $time (Time) - the creation/modification time of the PDF file
-pdfjs-document-properties-date-string = { $date }, { $time }
+#   $dateObj (Date) - the creation/modification date and time of the PDF file
+pdfjs-document-properties-date-time-string = { DATETIME($dateObj, dateStyle: "short", timeStyle: "medium") }
 pdfjs-document-properties-creator = Създател:
 pdfjs-document-properties-producer = PDF произведен от:
 pdfjs-document-properties-version = Издание на PDF:
@@ -270,10 +263,6 @@ pdfjs-rendering-error = Грешка при изчертаване на стра
 
 ## Annotations
 
-# Variables:
-#   $date (Date) - the modification date of the annotation
-#   $time (Time) - the modification time of the annotation
-pdfjs-annotation-date-string = { $date }, { $time }
 # .alt: This is used as a tooltip.
 # Variables:
 #   $type (String) - an annotation type from a list defined in the PDF spec
@@ -281,6 +270,9 @@ pdfjs-annotation-date-string = { $date }, { $time }
 # Some common types are e.g.: "Check", "Text", "Comment", "Note"
 pdfjs-text-annotation-type =
     .alt = [Анотация { $type }]
+# Variables:
+#   $dateObj (Date) - the modification date and time of the annotation
+pdfjs-annotation-date-time-string = { DATETIME($dateObj, dateStyle: "short", timeStyle: "medium") }
 
 ## Password
 
@@ -301,8 +293,6 @@ pdfjs-editor-ink-button-label = Рисуване
 pdfjs-editor-stamp-button =
     .title = Добавяне или променяне на изображения
 pdfjs-editor-stamp-button-label = Добавяне или променяне на изображения
-pdfjs-editor-remove-button =
-    .title = Премахване
 
 ## Remove button for the various kind of editor.
 
@@ -326,19 +316,15 @@ pdfjs-editor-ink-opacity-input = Прозрачност
 pdfjs-editor-stamp-add-image-button =
     .title = Добавяне на изображение
 pdfjs-editor-stamp-add-image-button-label = Добавяне на изображение
-pdfjs-free-text =
+# .default-content is used as a placeholder in an empty text editor.
+pdfjs-free-text2 =
     .aria-label = Текстов редактор
-pdfjs-free-text-default-content = Започнете да пишете…
-pdfjs-ink =
-    .aria-label = Промяна на рисунка
-pdfjs-ink-canvas =
-    .aria-label = Изображение, създадено от потребител
+    .default-content = Започнете да пишете…
+pdfjs-editor-comments-sidebar-close-button-label = Затваряне на страничната лента
 
 ## Alt-text dialog
 
-# Alternative text (alt text) helps when people can't see the image.
 pdfjs-editor-alt-text-button-label = Алтернативен текст
-pdfjs-editor-alt-text-edit-button-label = Промяна на алтернативния текст
 pdfjs-editor-alt-text-dialog-label = Изберете от възможностите
 pdfjs-editor-alt-text-dialog-description = Алтернативният текст помага на потребителите, когато не могат да видят изображението или то не се зарежда.
 pdfjs-editor-alt-text-add-description-label = Добавяне на описание
@@ -355,14 +341,22 @@ pdfjs-editor-alt-text-textarea =
 ## Editor resizers
 ## This is used in an aria label to help to understand the role of the resizer.
 
-pdfjs-editor-resizer-label-top-left = Горен ляв ъгъл — преоразмеряване
-pdfjs-editor-resizer-label-top-middle = Горе в средата — преоразмеряване
-pdfjs-editor-resizer-label-top-right = Горен десен ъгъл — преоразмеряване
-pdfjs-editor-resizer-label-middle-right = Дясно в средата — преоразмеряване
-pdfjs-editor-resizer-label-bottom-right = Долен десен ъгъл — преоразмеряване
-pdfjs-editor-resizer-label-bottom-middle = Долу в средата — преоразмеряване
-pdfjs-editor-resizer-label-bottom-left = Долен ляв ъгъл — преоразмеряване
-pdfjs-editor-resizer-label-middle-left = Ляво в средата — преоразмеряване
+pdfjs-editor-resizer-top-left =
+    .aria-label = Горен ляв ъгъл — преоразмеряване
+pdfjs-editor-resizer-top-middle =
+    .aria-label = Горе в средата — преоразмеряване
+pdfjs-editor-resizer-top-right =
+    .aria-label = Горен десен ъгъл — преоразмеряване
+pdfjs-editor-resizer-middle-right =
+    .aria-label = Дясно в средата — преоразмеряване
+pdfjs-editor-resizer-bottom-right =
+    .aria-label = Долен десен ъгъл — преоразмеряване
+pdfjs-editor-resizer-bottom-middle =
+    .aria-label = Долу в средата — преоразмеряване
+pdfjs-editor-resizer-bottom-left =
+    .aria-label = Долен ляв ъгъл — преоразмеряване
+pdfjs-editor-resizer-middle-left =
+    .aria-label = Ляво в средата — преоразмеряване
 
 ## Color picker
 
@@ -382,3 +376,13 @@ pdfjs-editor-colorpicker-pink =
     .title = Розово
 pdfjs-editor-colorpicker-red =
     .title = Червено
+
+## New alt-text dialog
+## Group note for entire feature: Alternative text (alt text) helps when people can't see the image. This feature includes a tool to create alt text automatically using an AI model that works locally on the user's device to preserve privacy.
+
+pdfjs-editor-new-alt-text-disclaimer-learn-more-url = Научете повече
+pdfjs-editor-new-alt-text-not-now-button = Не сега
+
+## Image alt-text settings
+
+pdfjs-editor-alt-text-settings-delete-model-button = Изтриване
