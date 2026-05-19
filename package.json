@@ -23,7 +23,8 @@
 		"postpack": "pinst --enable"
 	},
 	"author": {
-		"name": "Akutsupis"
+		"name": "Akutsupis",
+		"email": "akutsupis@users.noreply.github.com"
 	},
 	"license": "GPL-2.0-only",
 	"devDependencies": {
