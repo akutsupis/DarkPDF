@@ -10,21 +10,22 @@ jobs:
     name: ${{ matrix.friendlyName }} ${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
     env:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write
     strategy:
       fail-fast: true
       matrix:
         node: ["22.x"]
-        os: [macos-14, windows-latest, ubuntu-20.04]
-        arch: [x64]
         include:
           - os: macos-14
+            arch: universal
             friendlyName: macOS
           - os: windows-latest
+            arch: x64
             friendlyName: Windows
           - os: ubuntu-20.04
+            arch: x64
             friendlyName: Ubuntu
     steps:
       - name: Check out Git repository
