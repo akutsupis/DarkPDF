@@ -1,5 +1,5 @@
 /*
-NightPDF Dark mode for Ps
+DarkPDF Dark mode for Pdfs
 Copyright (C) 2021  Advaith Madhukar
 
 This program is free software; you can redistribute it and/or
@@ -36,13 +36,14 @@ import { autoUpdater } from "electron-updater";
 import { readFileSync } from "node:fs";
 import localShortcut from "electron-localshortcut";
 import log from "electron-log";
-import yargs from "yargs";
-import Store from "electron-store";
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
+import Store, { type Options } from "electron-store";
 import {
-	nightpdf_schema,
-	type NightPDFSettings,
+	darkpdf_schema,
+	type DarkPDFSettings,
 	type Keybinds,
-	nightpdf_default_settings,
+	darkpdf_default_settings,
 	KeybindsHelper,
 } from "../helpers/settings";
 import { createMenu } from "./menutemplate";
@@ -51,25 +52,25 @@ import process from "node:process";
 // Workaround if the schema is invalid
 // see: https://github.com/sindresorhus/electron-store/issues/116#issuecomment-816515814
 const makeStore = (
-	options: Store.Options<NightPDFSettings>,
-): Store<NightPDFSettings> => {
+	options: Options<DarkPDFSettings>,
+): Store<DarkPDFSettings> => {
 	try {
-		return new Store<NightPDFSettings>(options);
+		return new Store<DarkPDFSettings>(options);
 	} catch (e) {
 		console.error(e);
 		console.log("Resetting configuration...");
-		const store = new Store<NightPDFSettings>({
+		const store = new Store<DarkPDFSettings>({
 			...options,
 			schema: undefined,
 		});
 		store.clear();
-		return new Store<NightPDFSettings>(options);
+		return new Store<DarkPDFSettings>(options);
 	}
 };
 
-const default_settings = nightpdf_default_settings(version);
+const default_settings = darkpdf_default_settings(version);
 const store = makeStore({
-	schema: nightpdf_schema,
+	schema: darkpdf_schema,
 	defaults: default_settings,
 	clearInvalidConfig: true,
 });
@@ -109,7 +110,7 @@ function getpath(filePath: string) {
 
 function versionString(): string {
 	const pdfjsver = readFileSync(join(__dirname, "../../.pdfjs_version"));
-	return `NightPDF: ${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
+	return `DarkPDF: ${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
 }
 
 function setkeybind(id: string, command: Keybinds) {
@@ -345,8 +346,8 @@ function createWindow(
 let fileToOpen: string | string[] = "";
 let pageToOpen: number | null = null;
 
-const argv = yargs
-	.scriptName("NightPDF")
+const argv = yargs(hideBin(process.argv))
+	.scriptName("DarkPDF")
 	.usage("Usage: $0 [-p] <pdf>")
 	.example("$0 -p 5 pdf.pdf", "Loads pdf on the 5th page")
 	.option("p", {
@@ -415,7 +416,7 @@ app.whenReady().then(() => {
 	}
 
 	if (process.env.EASTER_EGG) {
-		localShortcut.register("shift+alt+T", () => {
+		localShortcut.register("Shift+Alt+T", () => {
 			console.log(NOTIFICATION_BODY);
 			new Notification({
 				title: NOTIFICATION_TITLE,
@@ -425,23 +426,25 @@ app.whenReady().then(() => {
 	}
 
 	for (const action of keybinds.actions) {
-		localShortcut.register(
-			keybinds.getActionKeybindsTrigger(action),
-			() => {
-				const focusedWin = BrowserWindow.getFocusedWindow();
-				if (focusedWin) {
-					focusedWin.webContents.send(
-						keybinds.getAction(action),
-						keybinds.getActionData(action),
-					);
-				}
-			},
-		);
+		for (const trigger of keybinds.getActionKeybindsTrigger(action)) {
+			localShortcut.register(
+				trigger,
+				() => {
+					const focusedWin = BrowserWindow.getFocusedWindow();
+					if (focusedWin) {
+						focusedWin.webContents.send(
+							keybinds.getAction(action),
+							keybinds.getActionData(action),
+						);
+					}
+				},
+			);
+		}
 	}
 
 	// register Ctrl+1 to Ctrl+9 shortcuts
 	for (let i = 1; i <= 9; i++) {
-		localShortcut.register(`Ctrl+${i}`, () => {
+		localShortcut.register(`CommandOrControl+${i}`, () => {
 			const focusedWin = BrowserWindow.getFocusedWindow();
 			if (focusedWin) {
 				focusedWin.webContents.send("switch-tab", i);

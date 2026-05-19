@@ -26,7 +26,7 @@ import {
 	type KeybindHelper,
 } from "../helpers/settings";
 
-async function nightPDFSettings() {
+async function darkPDFSettings() {
 	console.log("settings page loaded");
 
 	// LHS menu
@@ -406,15 +406,15 @@ async function nightPDFSettings() {
 		}
 		// const keybindParts = currentBind.toStringArray();
 		// const keybindKey = keybindParts.pop();
-		for (const modifier of currentBind.getModifierKeys()) {
+		for (const modifierName of currentBind.getModifierNames()) {
 			const modifierSpan = document.createElement("span");
 			modifierSpan.classList.add(
 				"keybind-modifier",
 				window.api.platform,
-				modifier.savesAs,
+				modifierName,
 			);
 			modifierSpan.innerText = modifierToString(
-				modifier.savesAs,
+				modifierName,
 				window.api.platform,
 			);
 
@@ -515,6 +515,6 @@ async function nightPDFSettings() {
 	}
 }
 
-nightPDFSettings();
+darkPDFSettings();
 
-export default nightPDFSettings;
+export default darkPDFSettings;

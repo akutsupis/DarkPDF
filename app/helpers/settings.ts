@@ -1,7 +1,7 @@
 import type { Schema } from "electron-store";
 import type { JSONSchema } from "json-schema-typed";
 
-type NightPDFSettings = JSONSchema & {
+type DarkPDFSettings = JSONSchema & {
 	version: string;
 	general: Record<string, boolean>;
 	keybinds: Record<string, Keybinds>;
@@ -125,6 +125,10 @@ class KeybindHelper {
 
 	getModifierKeys(): ModifierKey[] {
 		return Object.values(this.keybind.modifiers);
+	}
+
+	getModifierNames(): string[] {
+		return Object.keys(this.keybind.modifiers);
 	}
 
 	getKey(): string | null {
@@ -262,7 +266,7 @@ function keybindPropertyDef(min = 0, max = 2): object {
 	};
 }
 
-const nightpdf_schema: Schema<NightPDFSettings> = {
+const darkpdf_schema: Schema<DarkPDFSettings> = {
 	version: {
 		type: "string",
 	},
@@ -293,7 +297,7 @@ const nightpdf_schema: Schema<NightPDFSettings> = {
 	},
 };
 
-function nightpdf_default_settings(version: string): NightPDFSettings {
+function darkpdf_default_settings(version: string): DarkPDFSettings {
 	return {
 		version: version,
 		general: {
@@ -302,29 +306,29 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 		},
 		keybinds: {
 			OpenWindow: {
-				keybind: KeybindHelper.keybindFromTriggerArray(["Ctrl+T"]),
+				keybind: KeybindHelper.keybindFromTriggerArray(["CommandOrControl+T"]),
 				action: "openNewPDF",
 				displayName: "Open New PDF",
 			},
 			CloseWindow: {
 				keybind: KeybindHelper.keybindFromTriggerArray([
-					"Ctrl+w",
-					"Ctrl+F4",
+					"CommandOrControl+W",
+					"CommandOrControl+F4",
 				]),
 				action: "close-tab",
 				displayName: "Close Tab",
 			},
 			ReOpen: {
 				keybind: KeybindHelper.keybindFromTriggerArray([
-					"Ctrl+Shift+T",
+					"CommandOrControl+Shift+T",
 				]),
 				action: "reopen-tab",
 				displayName: "Reopen Tab",
 			},
 			SwitchTab: {
 				keybind: KeybindHelper.keybindFromTriggerArray([
-					"Ctrl+Tab",
-					"Ctrl+PageDown",
+					"CommandOrControl+Tab",
+					"CommandOrControl+PageDown",
 				]),
 				action: "switch-tab",
 				data: "next",
@@ -332,8 +336,8 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 			},
 			PreviousTab: {
 				keybind: KeybindHelper.keybindFromTriggerArray([
-					"Ctrl+Shift+Tab",
-					"Ctrl+PageUp",
+					"CommandOrControl+Shift+Tab",
+					"CommandOrControl+PageUp",
 				]),
 				action: "switch-tab",
 				data: "prev",
@@ -341,7 +345,7 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 			},
 			LeftTab: {
 				keybind: KeybindHelper.keybindFromTriggerArray([
-					"Ctrl+Shift+PageUp",
+					"CommandOrControl+Shift+PageUp",
 				]),
 				action: "move-tab",
 				data: "prev",
@@ -349,7 +353,7 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 			},
 			RightTab: {
 				keybind: KeybindHelper.keybindFromTriggerArray([
-					"Ctrl+Shift+PageDown",
+					"CommandOrControl+Shift+PageDown",
 				]),
 				action: "move-tab",
 				data: "next",
@@ -357,7 +361,7 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 			},
 			StartTab: {
 				keybind: KeybindHelper.keybindFromTriggerArray([
-					"Ctrl+Shift+Home",
+					"CommandOrControl+Shift+Home",
 				]),
 				action: "move-tab",
 				data: "start",
@@ -365,7 +369,7 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 			},
 			EndTab: {
 				keybind: KeybindHelper.keybindFromTriggerArray([
-					"Ctrl+Shift+End",
+					"CommandOrControl+Shift+End",
 				]),
 				action: "move-tab",
 				data: "end",
@@ -375,7 +379,7 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 	};
 }
 
-// The modifier keys allowed in NightPDF
+// The modifier keys allowed in DarkPDF
 const ModifierKeys: ModifierKeyMap = {
 	CommandOrControl: {
 		savesAs: "Ctrl",
@@ -428,13 +432,13 @@ function modifierToString(name: string, platform: string): string {
 }
 
 export {
-	type NightPDFSettings,
-	nightpdf_schema,
+	type DarkPDFSettings,
+	darkpdf_schema,
 	type Keybind,
 	type Keybinds,
 	type ModifierKeyMap,
 	ModifierKeys,
-	nightpdf_default_settings,
+	darkpdf_default_settings,
 	modifierToString,
 	KeybindHelper,
 	KeybindsHelper,
