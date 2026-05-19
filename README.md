@@ -1,31 +1,24 @@
-# NightPDF
+# DarkPDF
 
-Dark Mode PDF reader
+Dark Mode PDF reader forked from Lunarequest/NightPDF
 
 It uses Electron but my eyes dont care.
 
-![NightPDF screencast](docs/nightpdf.gif?raw=true)
+![DarkPDF screencast](docs/nightpdf.gif?raw=true)
 
 ## Download Binaries
 
-![NightPDF logo](docs/nightpdf_small.png?raw=true)
+![DarkPDF logo](docs/nightpdf_small.png?raw=true)
 
 Binaries for Linux, Macos and Windows
 
--   [Latest release](https://github.com/Lunarequest/NightPDF/releases/latest)
+-   [Latest release](https://github.com/akutsupis/DarkPDF/releases/latest)
 <br/>
 <br/>
-<a href='https://flathub.org/apps/io.github.lunarequest.NightPDF'><img width='240' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.png'/></a>
-
-## Support tiers
-
-- Tier 1: Linux, guaranteed builds and guaranteed 100% functionality
-- Tier 2: Tier 2: Windows, guaranteed builds. Functionality is not guaranteed
-- Tier 3: Tier 3: Macos, builds are not guaranteed if it breaks fix is not guaranteed
 
 ## Limitations
 
-There is limited support for xfa forms, and saving forms with filled in data. This will be worked on with coming releases.
+There is limited support for xfa forms, and saving forms with filled in data.
 
 ## Development
 
@@ -67,7 +60,7 @@ yarn dist
 
 ## CLI
 ```
-Usage: NightPDF [-p] [pdf]
+Usage: DarkPDF [-p] [pdf]
 
 Positionals:
   pdf, pdf  The pdf to open                                             [string]
@@ -78,7 +71,7 @@ Options:
   -p, --pages    The page to open in the pdf                            [number]
 
 Examples:
-  NightPDF -p 5 pdf.pdf  Loads pdf on the 5th page
+  DarkPDF -p 5 pdf.pdf  Loads pdf on the 5th page
 ```
 
 ## Licenses

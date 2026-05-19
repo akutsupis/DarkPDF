@@ -24,7 +24,7 @@ import type { API } from "nouislider";
 import { handlePresetChange } from "../helpers/sliders";
 import { hideDarkConfigurator, toggleDarkConfigurator } from "../helpers/css";
 import { openFile } from "../helpers/file";
-import type { Keybinds, NightPDFSettings } from "../helpers/settings";
+import type { Keybinds, DarkPDFSettings } from "../helpers/settings";
 
 declare global {
 	interface Window {
@@ -33,7 +33,7 @@ declare global {
 			getFileName(arg0: string): Promise<string>;
 			ResolvePath(arg0: string): Promise<string>;
 			SetBind(key: string, value: Keybinds): Promise<null>;
-			GetSettings(): Promise<NightPDFSettings>;
+			GetSettings(): Promise<DarkPDFSettings>;
 			SetSetting(
 				group: string,
 				key: string,
@@ -66,7 +66,7 @@ declare global {
 	}
 }
 
-async function nightPDF() {
+async function darkPDF() {
 	console.log("loading");
 	const appContainerElement: HTMLElement = document.getElementById(
 		"appContainer",
@@ -473,4 +473,4 @@ async function nightPDF() {
 	};
 }
 
-await nightPDF();
+await darkPDF();

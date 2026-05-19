@@ -4,8 +4,8 @@ const { flipFuses, FuseVersion, FuseV1Options } = require("@electron/fuses");
 
 /** @type electron-builder.Configuration */
 const config = {
-	appId: "io.github.lunarequest.NightPDF",
-	productName: "NightPDF",
+	appId: "io.github.akutsupis.DarkPDF",
+	productName: "DarkPDF",
 	files: [
 		"**/*",
 		"!*.{ts}",
@@ -60,7 +60,7 @@ const config = {
 	],
 	linux: {
 		desktop: {
-			Name: "NightPDF",
+			Name: "DarkPDF",
 			Comment: "Dark Mode PDF reader",
 		},
 		synopsis: "Dark Mode PDF reader",

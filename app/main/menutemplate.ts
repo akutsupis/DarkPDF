@@ -65,7 +65,7 @@ function createMenu() {
 					label: "Learn More",
 					click: async () => {
 						await shell.openExternal(
-							"https://github.com/Lunarequest/NightPDF#readme",
+							"https://github.com/akutsupis/DarkPDF#readme",
 						);
 					},
 				},
@@ -73,7 +73,7 @@ function createMenu() {
 					label: "License",
 					click: async () => {
 						await shell.openExternal(
-							"https://github.com/Lunarequest/NightPDF/blob/mistress/LICENSE",
+							"https://github.com/akutsupis/DarkPDF/blob/master/LICENSE",
 						);
 					},
 				},
@@ -81,14 +81,14 @@ function createMenu() {
 					label: "Bugs",
 					click: async () => {
 						await shell.openExternal(
-							"https://github.com/Lunarequest/NightPDF/issues",
+							"https://github.com/akutsupis/DarkPDF/issues",
 						);
 					},
 				},
 				{
 					label: "Contact",
 					click: async () => {
-						await shell.openExternal("mailto:luna@nullrequest.com");
+						await shell.openExternal("https://github.com/akutsupis");
 					},
 				},
 			],
