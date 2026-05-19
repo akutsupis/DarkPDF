@@ -34,7 +34,6 @@ import { parse, join, resolve } from "node:path";
 import { version } from "../../package.json";
 import { autoUpdater } from "electron-updater";
 import { readFileSync } from "node:fs";
-import localShortcut from "electron-localshortcut";
 import log from "electron-log";
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
@@ -42,9 +41,7 @@ import Store, { type Options } from "electron-store";
 import {
 	darkpdf_schema,
 	type DarkPDFSettings,
-	type Keybinds,
 	darkpdf_default_settings,
-	KeybindsHelper,
 } from "../helpers/settings";
 import { createMenu } from "./menutemplate";
 import process from "node:process";
@@ -113,17 +110,7 @@ function versionString(): string {
 	return `DarkPDF: ${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
 }
 
-function setkeybind(id: string, command: Keybinds) {
-	const storeKeybinds = store.get("keybinds");
-	if (!storeKeybinds) {
-		throw new Error("keybinds not found in store");
-	}
-	storeKeybinds[id] = command;
-	console.debug("id", id);
-	console.debug("command", command);
-	console.debug(storeKeybinds);
-	store.set("keybinds", storeKeybinds);
-}
+
 
 function createWindow(
 	filename: string | string[] | null = null,
@@ -221,6 +208,15 @@ function createWindow(
 			};
 		}
 
+		// Ctrl+T (Open New Tab) — same action as Ctrl+O, wired here so
+		// openNewPDF() is in scope rather than going through the renderer.
+		const tabs_new = menu.getMenuItemById("tabs-new");
+		if (tabs_new) {
+			tabs_new.click = () => {
+				openNewPDF();
+			};
+		}
+
 		if (print) {
 			print.click = () => {
 				const focusedWin = BrowserWindow.getFocusedWindow();
@@ -246,12 +242,7 @@ function createWindow(
 			log.debug(`${url} is 3rd party content opening externally`);
 		});
 
-		ipcMain.on(
-			"SetBind",
-			(_e: IpcMainEvent, newKeybind: [string, Keybinds]) => {
-				setkeybind(newKeybind[0], newKeybind[1]);
-			},
-		);
+
 		ipcMain.on(
 			"SetSetting",
 			(_e: IpcMainEvent, newSetting: [string, string, unknown]) => {
@@ -393,10 +384,6 @@ app.on("open-file", (e: Event, path: string) => {
 });
 
 app.whenReady().then(() => {
-	const keybinds: KeybindsHelper = new KeybindsHelper(
-		store.get("keybinds") as Record<string, Keybinds>,
-		process.platform,
-	);
 	if (fileToOpen) {
 		if (typeof fileToOpen === "string") {
 			fileToOpen.replace("file://", "");
@@ -415,42 +402,7 @@ app.whenReady().then(() => {
 		createWindow();
 	}
 
-	if (process.env.EASTER_EGG) {
-		localShortcut.register("Shift+Alt+T", () => {
-			console.log(NOTIFICATION_BODY);
-			new Notification({
-				title: NOTIFICATION_TITLE,
-				body: NOTIFICATION_BODY,
-			}).show();
-		});
-	}
 
-	for (const action of keybinds.actions) {
-		for (const trigger of keybinds.getActionKeybindsTrigger(action)) {
-			localShortcut.register(
-				trigger,
-				() => {
-					const focusedWin = BrowserWindow.getFocusedWindow();
-					if (focusedWin) {
-						focusedWin.webContents.send(
-							keybinds.getAction(action),
-							keybinds.getActionData(action),
-						);
-					}
-				},
-			);
-		}
-	}
-
-	// register Ctrl+1 to Ctrl+9 shortcuts
-	for (let i = 1; i <= 9; i++) {
-		localShortcut.register(`CommandOrControl+${i}`, () => {
-			const focusedWin = BrowserWindow.getFocusedWindow();
-			if (focusedWin) {
-				focusedWin.webContents.send("switch-tab", i);
-			}
-		});
-	}
 });
 
 app.on("window-all-closed", () => {

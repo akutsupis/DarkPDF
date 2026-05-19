@@ -1,9 +1,29 @@
 import type { MenuItemConstructorOptions } from "electron";
-import { shell } from "electron";
+import { BrowserWindow, shell } from "electron";
 import { openSettings } from "./settings";
+
+/**
+ * Sends an IPC message to the currently focused BrowserWindow's renderer.
+ * Used by menu accelerators to trigger tab actions regardless of webview focus.
+ */
+function sendToFocused(channel: string, ...args: unknown[]) {
+	BrowserWindow.getFocusedWindow()?.webContents.send(channel, ...args);
+}
 
 function createMenu() {
 	const menuTemplate: MenuItemConstructorOptions[] = [];
+
+	// Tab position shortcuts (Ctrl+1 through Ctrl+9)
+	const tabPositionItems: MenuItemConstructorOptions[] = [];
+	for (let i = 1; i <= 9; i++) {
+		tabPositionItems.push({
+			label: `Tab ${i}`,
+			accelerator: `CmdOrCtrl+${i}`,
+			visible: false,
+			click: () => sendToFocused("switch-tab", i),
+		});
+	}
+
 	menuTemplate.push(
 		{
 			role: "fileMenu",
@@ -23,11 +43,86 @@ function createMenu() {
 				{
 					label: "Settings",
 					id: "settings",
-					accelerator: "Alt+s",
+					accelerator: "Alt+S",
 					click: async () => {
 						openSettings();
 					},
 				},
+			],
+		},
+		{
+			label: "Tabs",
+			submenu: [
+				{
+					label: "Open New Tab",
+					id: "tabs-new",
+					accelerator: "CmdOrCtrl+T",
+				},
+				{
+					label: "Close Tab",
+					accelerator: "CmdOrCtrl+W",
+					click: () => sendToFocused("close-tab"),
+				},
+				{
+					label: "Close Tab",
+					accelerator: "CmdOrCtrl+F4",
+					visible: false,
+					click: () => sendToFocused("close-tab"),
+				},
+				{
+					label: "Reopen Tab",
+					accelerator: "CmdOrCtrl+Shift+T",
+					click: () => sendToFocused("reopen-tab"),
+				},
+				{ type: "separator" },
+				{
+					label: "Next Tab",
+					accelerator: "CmdOrCtrl+Tab",
+					click: () => sendToFocused("switch-tab", "next"),
+				},
+				{
+					label: "Previous Tab",
+					accelerator: "CmdOrCtrl+Shift+Tab",
+					click: () => sendToFocused("switch-tab", "prev"),
+				},
+				{
+					label: "Next Tab",
+					accelerator: "CmdOrCtrl+PageDown",
+					visible: false,
+					click: () => sendToFocused("switch-tab", "next"),
+				},
+				{
+					label: "Previous Tab",
+					accelerator: "CmdOrCtrl+PageUp",
+					visible: false,
+					click: () => sendToFocused("switch-tab", "prev"),
+				},
+				{ type: "separator" },
+				{
+					label: "Move Tab Left",
+					accelerator: "CmdOrCtrl+Shift+PageUp",
+					visible: false,
+					click: () => sendToFocused("move-tab", "prev"),
+				},
+				{
+					label: "Move Tab Right",
+					accelerator: "CmdOrCtrl+Shift+PageDown",
+					visible: false,
+					click: () => sendToFocused("move-tab", "next"),
+				},
+				{
+					label: "Move Tab to Start",
+					accelerator: "CmdOrCtrl+Shift+Home",
+					visible: false,
+					click: () => sendToFocused("move-tab", "start"),
+				},
+				{
+					label: "Move Tab to End",
+					accelerator: "CmdOrCtrl+Shift+End",
+					visible: false,
+					click: () => sendToFocused("move-tab", "end"),
+				},
+				...tabPositionItems,
 			],
 		},
 		{

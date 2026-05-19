@@ -17,7 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 import { contextBridge, ipcRenderer } from "electron";
-import type { Keybinds, Keybind, ModifierKeyMap } from "../helpers/settings";
 
 contextBridge.exposeInMainWorld("api", {
 	GetVersion: async () => {
@@ -44,9 +43,6 @@ contextBridge.exposeInMainWorld("api", {
 		ipcRenderer.removeAllListeners(ListenerType);
 	},
 
-	SetBind: (key: string, value: Keybinds) => {
-		return ipcRenderer.send("SetBind", [key, value]);
-	},
 	SetSetting: (group: string, key: string, value: unknown) => {
 		return ipcRenderer.send("SetSetting", [group, key, value]);
 	},
