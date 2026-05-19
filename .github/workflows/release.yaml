@@ -16,11 +16,11 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        node: ["21.x"]
-        os: [macos-12, windows-latest, ubuntu-20.04]
+        node: ["22.x"]
+        os: [macos-14, windows-latest, ubuntu-20.04]
         arch: [x64]
         include:
-          - os: macos-12
+          - os: macos-14
             friendlyName: macOS
           - os: windows-latest
             friendlyName: Windows
@@ -50,8 +50,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            dist/NightPDF*.exe
-            dist/NightPDF*.dmg
+            dist/DarkPDF*.exe
+            dist/DarkPDF*.dmg
             dist/*.AppImage
             dist/*.deb
             dist/*.rpm
