@@ -1,4 +1,3 @@
-// @ts-expect-error
 delete process.versions.pnp;
 delete process.env.NODE_OPTIONS;
 const esbuild = await import("esbuild");

@@ -45,7 +45,6 @@ function setupTab(tab: Tab, tabCssKey: Map<Tab, string>, debug = false) {
 			"filter: brightness(0.91) grayscale(0.95) invert(0.95) sepia(0.55) hue-rotate(180deg);";
 		style += "border-image: none;";
 		style += "}";
-		// @ts-expect-error
 		content?.insertCSS(style).then((key: string) => {
 			console.info("inserted style", key);
 			tabCssKey.set(tab, key);
@@ -106,7 +105,6 @@ function updateDarkSettings(
 				// @ts-expect-error
 				content.removeInsertedCSS(key);
 			}
-			// @ts-expect-error
 			content.insertCSS(cssRule).then((key: string) => {
 				console.info("inserted style", key);
 				tabCssKey.set(tab, key);
