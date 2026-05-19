@@ -159,7 +159,7 @@ async function darkPDF() {
 				page = msg[1];
 				files = msg[0];
 			} else {
-				// @ts-ignore we know this is string | string[]
+				// @ts-expect-error we know this is string | string[]
 				files = msg;
 			}
 
@@ -195,7 +195,7 @@ async function darkPDF() {
 		if (tab) {
 			// the webview's window.print() method is intercepted
 			// by pdfjs and opens the print dialog.
-			// @ts-ignore
+			// @ts-expect-error
 			tab.webview?.executeJavaScript("window.print();");
 		}
 	});

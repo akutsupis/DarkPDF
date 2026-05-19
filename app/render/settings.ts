@@ -29,13 +29,15 @@ async function darkPDFSettings() {
 	const settings = await window.api.GetSettings();
 
 	for (const setting in settings) {
-		if (Object.prototype.hasOwnProperty.call(settings, setting)) {
+		if (Object.hasOwn(settings, setting)) {
 			const menuItem = document.createElement("div");
 			const panelId = `settings-${setting}`;
 			menuItem.classList.add("menu-item");
 			menuItem.innerText = setting;
 			menuItem.addEventListener("click", () => {
-				for (const panel of document.getElementsByClassName("menu-item")) {
+				for (const panel of document.getElementsByClassName(
+					"menu-item",
+				)) {
 					panel.classList.remove("active");
 				}
 				menuItem.classList.add("active");

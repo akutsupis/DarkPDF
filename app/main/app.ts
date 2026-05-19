@@ -25,7 +25,6 @@ import {
 	ipcMain,
 	shell,
 	nativeTheme,
-	Notification,
 	type IpcMainEvent,
 	type IpcMainInvokeEvent,
 } from "electron";
@@ -80,8 +79,8 @@ const FLATPAK = process.env.FLATPAK;
 const linux = process.platform === "linux";
 log.transports.file.level = "debug";
 
-const NOTIFICATION_TITLE = "Trans rights";
-const NOTIFICATION_BODY = "Trans rights are human rights 🏳️‍⚧️";
+const _NOTIFICATION_TITLE = "Trans rights";
+const _NOTIFICATION_BODY = "Trans rights are human rights 🏳️‍⚧️";
 
 //in the future this can be use for migrations
 const store_version = store.get("version");
@@ -109,8 +108,6 @@ function versionString(): string {
 	const pdfjsver = readFileSync(join(__dirname, "../../.pdfjs_version"));
 	return `DarkPDF: ${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
 }
-
-
 
 function createWindow(
 	filename: string | string[] | null = null,
@@ -153,7 +150,7 @@ function createWindow(
 	const wc = win.webContents;
 	// if the window url changes from the inital one,
 	// block the change and use xdg-open to open it
-	// @ts-ignore - will-navigate is not in the type definition
+	// @ts-expect-error - will-navigate is not in the type definition
 	wc.on("will-navigate", (e: Event, url: string) => {
 		if (url !== wc.getURL()) {
 			e.preventDefault();
@@ -181,7 +178,6 @@ function createWindow(
 			if (page) {
 				win.webContents.send("file-open", [filename, page]);
 			} else {
-				// biome-ignore lint: don't double wrap array
 				filename = Array.isArray(filename) ? filename : [filename];
 				win.webContents.send("file-open", filename);
 			}
@@ -242,7 +238,6 @@ function createWindow(
 			log.debug(`${url} is 3rd party content opening externally`);
 		});
 
-
 		ipcMain.on(
 			"SetSetting",
 			(_e: IpcMainEvent, newSetting: [string, string, unknown]) => {
@@ -251,12 +246,12 @@ function createWindow(
 				if (!storeSettings) {
 					throw new Error(`${settingGroup} not found in store`);
 				}
-				if (!Object.prototype.hasOwnProperty.call(storeSettings, key)) {
+				if (!Object.hasOwn(storeSettings, key)) {
 					throw new Error(
 						`${key} not found in ${settingGroup} in store`,
 					);
 				}
-				// @ts-ignore
+				// @ts-expect-error
 				storeSettings[key] = value;
 				store.set(settingGroup, storeSettings);
 			},
@@ -367,7 +362,7 @@ if (pdf.length > 0) {
 	}
 }
 
-// @ts-ignore - open-file is not in the electron type definitions
+// @ts-expect-error - open-file is not in the electron type definitions
 app.on("open-file", (e: Event, path: string) => {
 	e.preventDefault();
 	if (app.isReady()) {
@@ -401,8 +396,6 @@ app.whenReady().then(() => {
 	} else {
 		createWindow();
 	}
-
-
 });
 
 app.on("window-all-closed", () => {

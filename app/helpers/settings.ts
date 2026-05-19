@@ -51,8 +51,4 @@ function darkpdf_default_settings(version: string): DarkPDFSettings {
 	};
 }
 
-export {
-	type DarkPDFSettings,
-	darkpdf_schema,
-	darkpdf_default_settings,
-};
+export { type DarkPDFSettings, darkpdf_schema, darkpdf_default_settings };

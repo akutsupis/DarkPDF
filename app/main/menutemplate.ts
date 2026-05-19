@@ -183,7 +183,9 @@ function createMenu() {
 				{
 					label: "Contact",
 					click: async () => {
-						await shell.openExternal("https://github.com/akutsupis");
+						await shell.openExternal(
+							"https://github.com/akutsupis",
+						);
 					},
 				},
 			],

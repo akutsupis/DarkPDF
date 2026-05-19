@@ -26,7 +26,7 @@ function _try(func: CallableFunction, fallbackValue: number) {
 	try {
 		const value = func();
 		return value === null || value === undefined ? fallbackValue : value;
-	} catch (e) {
+	} catch (_e) {
 		return fallbackValue;
 	}
 }
@@ -35,17 +35,17 @@ function setupTab(tab: Tab, tabCssKey: Map<Tab, string>, debug = false) {
 	tab.once("webview-dom-ready", () => {
 		const content = tab.webview;
 		if (debug) {
-			// @ts-ignore
+			// @ts-expect-error
 			content?.openDevTools();
 		}
-		// @ts-ignore
+		// @ts-expect-error
 		content?.executeJavaScript(keyInterceptor);
 		let style = "div#viewer .page {";
 		style +=
 			"filter: brightness(0.91) grayscale(0.95) invert(0.95) sepia(0.55) hue-rotate(180deg);";
 		style += "border-image: none;";
 		style += "}";
-		// @ts-ignore
+		// @ts-expect-error
 		content?.insertCSS(style).then((key: string) => {
 			console.info("inserted style", key);
 			tabCssKey.set(tab, key);
@@ -103,10 +103,10 @@ function updateDarkSettings(
 		if (content) {
 			if (tabCssKey.has(tab)) {
 				const key = tabCssKey.get(tab);
-				// @ts-ignore
+				// @ts-expect-error
 				content.removeInsertedCSS(key);
 			}
-			// @ts-ignore
+			// @ts-expect-error
 			content.insertCSS(cssRule).then((key: string) => {
 				console.info("inserted style", key);
 				tabCssKey.set(tab, key);
@@ -303,7 +303,7 @@ function setupSliders(
 		hueSliderElement,
 		extraBrightnessSliderElement,
 	];
-	sliders.map((slider) => {
+	sliders.forEach((slider) => {
 		const namespace = brightnessSliderElement.id;
 		const eventName = `update.${namespace}`;
 		slider.noUiSlider.on(eventName, () => {

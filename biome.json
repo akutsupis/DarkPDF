@@ -1,7 +1,11 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-	"organizeImports": {
-		"enabled": false
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "off"
+			}
+		}
 	},
 	"linter": {
 		"enabled": true,
@@ -13,9 +17,9 @@
 		"enabled": true,
 		"indentStyle": "tab",
 		"indentWidth": 4,
-		"ignore": ["app/libs/**/**"]
+		"includes": ["**", "!app/libs", "!out", "!electron-builder-config.js"]
 	},
 	"files": {
-		"ignore": ["app/libs/**/**", "out/**/**"]
+		"includes": ["**", "!app/libs", "!out", "!electron-builder-config.js"]
 	}
 }
