@@ -59,10 +59,6 @@ const config = {
 		},
 	],
 	linux: {
-		desktop: {
-			Name: "DarkPDF",
-			Comment: "Dark Mode PDF reader",
-		},
 		synopsis: "Dark Mode PDF reader",
 		publish: ["github"],
 		target: [
